@@ -8,6 +8,10 @@ public class MouvementsPP : MonoBehaviour {
     public float speed;
     public float speedRun;
     public float speedJump;
+    public float sensiverticale = (float)150.0;
+
+
+
 
     //Variables privées
     private CharacterController controller;
@@ -15,12 +19,24 @@ public class MouvementsPP : MonoBehaviour {
     private float deltaTime;
     private Transform characterContent;
 
+    private Vector3 to;
+    private Vector3 mouseDirection;
+    private float x = (float)0.0;
+    private float y = (float)0.0;
+    private Vector3 angle;
+
 
 	// Use this for initialization
 	void Start () {
         controller = GetComponent<CharacterController>();
         moveDirection = new Vector3(0f, 0f, 0f);
         characterContent = transform.Find("Perso Principal FInal 1");
+
+        //On initialise l'angle
+        angle = transform.eulerAngles;
+        x = angle.y;
+        y = angle.x;
+
 	}
 
 
@@ -28,28 +44,37 @@ public class MouvementsPP : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        deltaTime = Time.deltaTime;
+        deltaTime = Time.deltaTime; //Ca evite de prendre de la mémoire pour rien.
+
+
+        //Le personnage va tourner sur lui-meme en fonction du mouvement de la souris.
+        x += Input.GetAxis("Mouse X") * sensiverticale * (float)0.02;
+        Quaternion rotation = Quaternion.Euler(y, x, 0);
+        transform.rotation = rotation;
+
+
 
         if(controller.isGrounded)
         {
             //On prend les différentes valeurs des axes horizontaux et verticaux et on les met dans le moveDirection (vecteur du déplacement du perso)
             moveDirection.Set(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             moveDirection *= speed;
+            moveDirection = transform.TransformDirection(moveDirection); //transforme les axes globaux en axes locaux et vice versa.
 
 
-            if (Input.GetKey("left shift")) //Si le perso court.
+            if (Input.GetButton("Jump")) //Si le perso saute. On le met avant le courrir car si on saute, on ne peut ni marcher, ni courrir.
             {
-                moveDirection *= speedRun;
-                characterContent.animation.CrossFade("Anim - Courrir", 0.2f);
+                characterContent.animation.CrossFade("Animation - Saut", 0.2f);
                 WaitForAnimation();
+                moveDirection.y += speedJump;
             }
             else
             {
-                if (Input.GetButton("Jump")) //Si le perso saute
+                if (Input.GetKey("left shift")) //Si le perso court 
                 {
-                    characterContent.animation.CrossFade("Animation - Saut", 0.2f);
+                    moveDirection *= speedRun;
+                    characterContent.animation.CrossFade("Anim - Courrir", 0.2f);
                     WaitForAnimation();
-                    moveDirection.y += speedJump;
                 }
                 else
                 {
@@ -63,9 +88,14 @@ public class MouvementsPP : MonoBehaviour {
                 characterContent.animation.CrossFade("Anim - Idle", 0.2f);
         }
 
+
+
+
         //Gravity et on bouge le character controller
         moveDirection.y -= gravity * deltaTime; 
         controller.Move(moveDirection * deltaTime);
+
+
 
 	}
 
