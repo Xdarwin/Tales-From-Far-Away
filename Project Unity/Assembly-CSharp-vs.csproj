@@ -49,9 +49,12 @@
      <Compile Include="Assets\Animations\Perso principal\MouvementsPP.cs" />
      <Compile Include="Assets\Menu\Menu.cs" />
      <Compile Include="Assets\Modelisation\Personnage\Perso principal\DeplacementsPP.cs" />
+     <Compile Include="Assets\Scripts\AI.cs" />
      <Compile Include="Assets\Scripts\CameraControl.cs" />
      <Compile Include="Assets\Scripts\FireballScript.cs" />
      <Compile Include="Assets\Scripts\HealthBar.cs" />
+     <Compile Include="Assets\Scripts\PersoPrincipal.cs" />
+     <Compile Include="Assets\Scripts\Squad.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />

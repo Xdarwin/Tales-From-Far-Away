@@ -76,7 +76,7 @@ public class MouvementsPP : MonoBehaviour {
                     characterContent.animation.CrossFade("Anim - Courrir", 0.2f);
                     WaitForAnimation();
                 }
-                else
+				else if (Input.GetButton("Horizontal")||Input.GetButton("Vertical"))
                 {
                     characterContent.animation.CrossFade("Anim - Marche"); //Si il ne court ni ne saute et qu'il bouge, alors il marche
                 }
